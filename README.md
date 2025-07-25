@@ -21,7 +21,7 @@ A smart Flask-based web app that compares a candidate's resume with a job descri
 
 ## 📷 Screenshot
 
-![App Screenshot](https://via.placeholder.com/800x400.png?text=AI+Resume+Screener)
+![AI Resume Screener UI](https://raw.githubusercontent.com/your-username/ai-resume-screener/main/Screenshot%202025-07-25%20205744.png)
 
 ---
 
