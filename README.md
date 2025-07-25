@@ -17,13 +17,6 @@ A smart Flask-based web app that compares a candidate's resume with a job descri
 - 📈 Progress chart (doughnut graph)
 - 🎨 Clean, modern TailwindCSS UI with animations
 
----
-
-## 📷 Screenshot
-
-![AI Resume Screener UI](https://raw.githubusercontent.com/your-username/ai-resume-screener/main/Screenshot%202025-07-25%20205744.png)
-
----
 
 ## 🛠️ Tech Stack
 
