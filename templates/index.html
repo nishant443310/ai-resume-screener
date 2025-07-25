@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Resume Screener</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-6">
+
+  <div class="bg-white w-full max-w-3xl rounded-xl shadow-lg p-8 space-y-6 animate-fade-in">
+    <h1 class="text-3xl font-bold text-center text-indigo-700">AI Resume Screener</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-4 animate-slide-up">
+      <div>
+        <label for="resume" class="block text-sm font-semibold text-gray-700 mb-1">Upload Resume (PDF):</label>
+        <input type="file" name="resume" id="resume" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+
+      <div>
+        <label for="job_description" class="block text-sm font-semibold text-gray-700 mb-1">Job Description:</label>
+        <textarea name="job_description" id="job_description" rows="5" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Paste the job description here..."></textarea>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 transform hover:scale-105">
+          Analyze
+        </button>
+      </div>
+    </form>
+
+    {% if score is not none %}
+    <div class="mt-6 bg-gray-50 p-6 rounded-lg border border-gray-200 animate-fade-in">
+      <div class="flex flex-col md:flex-row items-center justify-around space-y-6 md:space-y-0 md:space-x-6">
+        <div class="w-40 h-40">
+          <canvas id="scoreChart"></canvas>
+        </div>
+        <div>
+          <p class="text-xl font-bold text-indigo-700">Match Score: {{ score }}%</p>
+
+          <div class="mt-4">
+            <p class="font-semibold text-green-600 mb-1">✅ Matched Skills:</p>
+            <ul class="list-disc list-inside text-green-700 space-y-1">
+              {% for skill in matched_skills %}
+              <li>{{ skill }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <div class="mt-4">
+            <p class="font-semibold text-red-600 mb-1">❌ Missing Skills:</p>
+            <ul class="list-disc list-inside text-red-700 space-y-1">
+              {% for skill in missing_skills %}
+              <li>{{ skill }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <footer class="mt-10 text-center text-sm text-gray-600">
+    <p class="font-semibold">Made by Nishant Arya – Project: <span class="text-indigo-600">AI Resume Screener</span></p>
+    <p class="mt-1 max-w-xl mx-auto">This tool compares your resume with a job description and calculates a match score. It shows matched/missing skills to help improve alignment.</p>
+  </footer>
+
+  {% if score is not none %}
+  <script>
+    const ctx = document.getElementById('scoreChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: [{{ score }}, {{ 100 - score }}],
+          backgroundColor: ['#4f46e5', '#e5e7eb'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        cutout: '70%',
+        plugins: {
+          tooltip: { enabled: false },
+          legend: { display: false },
+        }
+      }
+    });
+  </script>
+  {% endif %}
+
+  <style>
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slide-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in {
+      animation: fade-in 0.8s ease-out forwards;
+    }
+
+    .animate-slide-up {
+      animation: slide-up 0.8s ease-out forwards;
+    }
+  </style>
+</body>
+</html>
